@@ -1,0 +1,24 @@
+# Secrets — never commit
+*.pem
+*.key
+terraform.tfvars
+*.tfvars
+!example.tfvars
+
+# Terraform state & working files
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+*.tfplan
+plan.out
+crash.log
+
+# AWS / local config
+.aws/
+.kube/
+
+# OS noise
+Thumbs.db
+desktop.ini
+.DS_Store

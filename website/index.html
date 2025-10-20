@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CloudForge — Built for the Cloud</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --border: rgba(255,255,255,0.06);
+      --text: #e8e8ed;
+      --text-dim: #7a7a8a;
+      --accent: #4af0c0;
+      --accent-glow: rgba(74, 240, 192, 0.15);
+      --warm: #f0a04a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 4rem;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 100;
+      background: rgba(10,10,15,0.8);
+    }
+
+    .logo {
+      font-family: 'Instrument Serif', serif;
+      font-size: 1.5rem;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    .btn {
+      padding: 0.65rem 1.5rem;
+      border-radius: 6px;
+      border: 1px solid var(--accent);
+      background: transparent;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+    .btn:hover {
+      background: var(--accent);
+      color: var(--bg);
+      box-shadow: 0 0 30px var(--accent-glow);
+    }
+    .btn-solid {
+      background: var(--accent);
+      color: var(--bg);
+    }
+    .btn-solid:hover {
+      box-shadow: 0 0 40px var(--accent-glow);
+      transform: translateY(-1px);
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-bottom: 2rem;
+      animation: fadeUp 0.8s ease-out;
+    }
+    .hero-badge span { color: var(--accent); }
+
+    h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      max-width: 900px;
+      animation: fadeUp 0.8s ease-out 0.1s both;
+    }
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--text-dim);
+      max-width: 520px;
+      margin: 1.5rem auto 2.5rem;
+      animation: fadeUp 0.8s ease-out 0.2s both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      animation: fadeUp 0.8s ease-out 0.3s both;
+    }
+
+    /* FEATURES */
+    .features {
+      padding: 6rem 4rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      transition: all 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card:hover {
+      border-color: rgba(74, 240, 192, 0.2);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .feature-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .feature-card:hover::after { opacity: 1; }
+
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--accent-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .feature-card p {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    /* STACK SECTION */
+    .stack {
+      padding: 6rem 4rem;
+      text-align: center;
+    }
+    .stack h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    .stack-sub {
+      color: var(--text-dim);
+      max-width: 480px;
+      margin: 0 auto 3rem;
+    }
+    .stack-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .stack-pill {
+      padding: 0.6rem 1.4rem;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-dim);
+      transition: all 0.3s;
+      cursor: default;
+    }
+    .stack-pill:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-glow);
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-dim);
+      font-size: 0.8rem;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .features { padding: 3rem 1.5rem; }
+      .stack { padding: 3rem 1.5rem; }
+      footer { flex-direction: column; gap: 1rem; padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo">CloudForge</div>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="#">Docs</a></li>
+      <li><a href="#">Pricing</a></li>
+    </ul>
+    <a href="#" class="btn">Get Started</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-badge">🚀 <span>v1.0</span> — Now Live on AWS</div>
+    <h1>Ship to the <em>cloud</em> with confidence</h1>
+    <p class="hero-sub">A production-ready infrastructure powered by Terraform, Kubernetes, Jenkins, and Docker — secured end to end.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn btn-solid">Deploy Now</a>
+      <a href="#" class="btn">View Architecture</a>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="feature-card">
+      <div class="feature-icon">🏗️</div>
+      <h3>Infrastructure as Code</h3>
+      <p>Terraform manages every resource — VPCs, subnets, EKS clusters, and IAM roles — all version-controlled and reproducible.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🐳</div>
+      <h3>Containerized Deploys</h3>
+      <p>Multi-stage Docker builds produce minimal, secure images pushed to ECR and orchestrated by Kubernetes.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">☸️</div>
+      <h3>Kubernetes on EKS</h3>
+      <p>Auto-scaling workloads with health checks, rolling updates, and zero-downtime deployments on AWS EKS.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚙️</div>
+      <h3>Jenkins CI/CD</h3>
+      <p>Automated pipelines build, test, scan, and deploy on every push — with Slack notifications and approval gates.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <h3>Security First</h3>
+      <p>Network policies, pod security, Trivy scanning, encrypted secrets, and least-privilege IAM — baked in from day one.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <h3>Observability</h3>
+      <p>CloudWatch logs, Prometheus metrics, and Grafana dashboards give full visibility into your infrastructure.</p>
+    </div>
+  </section>
+
+  <section class="stack" id="stack">
+    <h2>The Stack</h2>
+    <p class="stack-sub">Every layer chosen for reliability, security, and developer experience.</p>
+    <div class="stack-grid">
+      <div class="stack-pill">AWS EC2</div>
+      <div class="stack-pill">Amazon EKS</div>
+      <div class="stack-pill">Terraform</div>
+      <div class="stack-pill">Docker</div>
+      <div class="stack-pill">Kubernetes</div>
+      <div class="stack-pill">Jenkins</div>
+      <div class="stack-pill">Trivy</div>
+      <div class="stack-pill">Nginx</div>
+      <div class="stack-pill">CloudWatch</div>
+      <div class="stack-pill">IAM</div>
+      <div class="stack-pill">ECR</div>
+      <div class="stack-pill">VPC</div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="logo" style="font-size:1.1rem">CloudForge</div>
+    <div>&copy; 2026 CloudForge. Deployed with confidence.</div>
+  </footer>
+</body>
+</html>
